@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web Programiranje Zadaca</title>
+    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+    <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
+    <style>
+        th {
+            padding: 0 30px 5px;
+            line-height: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Zadaca Web Programiranje</h1>
+
+</body>
+
+
+<script>
+    let table = d3.select("body").append("table");
+    thead = table.append("thead");
+    tbody = table.append("tbody");
+    thead.append("tr")
+        .selectAll("th")
+        .data(["First name", "Last name", "Email", "Username"])
+        .enter()
+        .append("th")
+        .text(d => d);
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', "http://127.0.0.1:3000", true);
+    xhr.send();
+
+    function processRequest(e) {
+        let dataTable = JSON.parse(xhr.responseText).map(
+            user => [user.firstName, user.lastName, user.email, user.username]
+        );
+        var rows = tbody.selectAll("tr")
+            .data(dataTable)
+            .enter()
+            .append("tr");
+
+        var cells = rows.selectAll("td")
+            .data(function (d, i) {
+                console.log(d);
+                return d;
+            })
+            .enter()
+            .append("td")
+            .text(function (d) {
+                return d;
+            });
+    }
+
+    xhr.addEventListener("readystatechange", processRequest, false);
+
+</script>
+
+</html>
